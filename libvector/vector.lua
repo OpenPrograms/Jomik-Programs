@@ -6,6 +6,13 @@ local function new(x, y, z)
 end
 local zero = new(0,0,0)
 
+local function isvector(v)
+	return type(v) == 'table'
+    and type(v.x) == 'number'
+    and type(v.y) == 'number'
+    and type(v.z) == 'number'
+end
+
 function vector.__add(a, b)
   return new(a.x + b.x, a.y + b.y, a.z + b.z)
 end
