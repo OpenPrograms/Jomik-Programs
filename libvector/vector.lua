@@ -25,7 +25,7 @@ function vector.__div(a, b)
   return new(a.x / b.x, a.y / b.y, a.z / b.z)
 end
 
-function vector:__len2()
+function vector:len2()
   return self.x * self.x + self.y * self.y + self.z * self.z
 end
 
