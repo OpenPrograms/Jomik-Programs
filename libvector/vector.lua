@@ -41,7 +41,7 @@ function vector:len2()
 end
 
 function vector:__tostring()
-  return string.format("(%d,%d,%d)", self.x, self.y, self.z)
+  return "(" .. self.x .. ", " .. self.y .. ", " .. self.z .. ")"
 end
 
 return setmetatable({new = new, zero = zero, isvector = isvector, from = from},
