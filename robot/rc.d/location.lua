@@ -17,9 +17,9 @@ local function location_move(side)
     elseif side == sides.up then
       position.y = position.y + 1
     elseif side == sides.back then
-      position = position + orientation
-    elseif side == sides.forward then
       position = position - orientation
+    elseif side == sides.forward then
+      position = position + orientation
     end
     
     location.set(position, orientation)
