@@ -17,7 +17,7 @@ local function ensureDataDirectory()
 end
 
 local function saveData()
-  assert(ensureDataDirectory,
+  assert(ensureDataDirectory(),
     "an error occurred trying to create directory at " .. DATA_PATH)
   local stream = io.open(DATA_PATH .. DATA_FILE, "w")
   stream:write(serialization.serialize(position),
@@ -29,15 +29,17 @@ local function loadData()
   local stream = io.open(DATA_PATH .. DATA_FILE, "r")
   
   local serializedpos, serializedori
+  -- read file if it exists
   if stream then
-    serializedpos = stream:read("*l")
-    serializedori = stream:read("*l")
+    serialized_position = stream:read("*l")
+    serialized_orientation = stream:read("*l")
     stream:close()
   end
   
-  if serializedpos and serializedori then
-    position = vector(serialization.unserialize(serializedpos))
-    orientation = vector(serialization.unserialize(serializedori))
+  -- if we got some text, unserialize it
+  if serialized_position and serialized_orientation then
+    position = vector(serialization.unserialize(serialized_position))
+    orientation = vector(serialization.unserialize(serialized_orientation))
   end
   
   return position, orientation
