@@ -13,6 +13,17 @@ local function isvector(v)
     and type(v.z) == 'number'
 end
 
+local function from(o)
+  if type(o) == "table" then
+    return new(o.x, o.y, o.z)
+  elseif type(o) == "string" then
+    local x, y, z = string.find(o, "[(<]*%s*(%d+)%s*,%s*(%d+)%s*,%s*(%d+)%s*[)>]*")
+    return new(x, y, z)
+  else
+    error("wrong argument type (expected <table> or <string>)")
+  end
+end
+
 function vector.__add(a, b)
   return new(a.x + b.x, a.y + b.y, a.z + b.z)
 end
@@ -30,8 +41,8 @@ function vector:len2()
 end
 
 function vector:__tostring()
-  return "(" .. self.x .. "," .. self.y .. "," .. self.z .. ")"
+  return string.format("(%d,%d,%d)", self.x, self.y, self.z)
 end
 
-return setmetatable({new = new, zero = zero},
+return setmetatable({new = new, zero = zero, isvector = isvector, from = from},
                     {__call = function(_, ...) return new(...) end})
