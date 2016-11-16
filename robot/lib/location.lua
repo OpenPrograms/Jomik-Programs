@@ -38,8 +38,8 @@ local function loadData()
   
   -- if we got some text, unserialize it
   if serialized_position and serialized_orientation then
-    position = vector(serialization.unserialize(serialized_position))
-    orientation = vector(serialization.unserialize(serialized_orientation))
+    position = vector.from(serialization.unserialize(serialized_position))
+    orientation = vector.from(serialization.unserialize(serialized_orientation))
   end
   
   return position, orientation
