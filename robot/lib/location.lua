@@ -28,7 +28,7 @@ end
 local function loadData()
   local stream = io.open(DATA_PATH .. DATA_FILE, "r")
   
-  local serializedpos, serializedori
+  local serialized_position, serialized_orientation
   -- read file if it exists
   if stream then
     serialized_position = stream:read("*l")
