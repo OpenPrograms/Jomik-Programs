@@ -2,7 +2,11 @@ local vector = {}
 vector.__index = vector
 
 local function new(x, y, z)
-  return setmetatable({x = x or 0, y = y or 0, z = z or 0}, vector)
+  return setmetatable({
+      x = tonumber(x) or 0,
+      y = tonumber(y) or 0,
+      z = tonumber(z) or 0
+      }, vector)
 end
 local zero = new(0,0,0)
 
