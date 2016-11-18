@@ -8,6 +8,7 @@ local shell = require("shell")
 local vector = require("vector")
 
 local args, opts = shell.parse(...)
+local charge_pos, chest_pos = vector(0, -1, 0), vector(0,1,0)
 
 local root_path = filesystem.path(filesystem.path(os.getenv("_")), "..")
 local lib_dir = filesystem.concat(root_path, "lib", BUILD_LIB_DIR)
@@ -24,6 +25,8 @@ Options:
   -v | --version    Show version.
   -l --list         Lists all possible shapes.
   --shape=<shape>   Shape to build.
+  --charge=<vector> Position of the charger.
+  --chest=<vector>  Position of the chest.
   -i --info         Show info about the shape.
 ]]
 
@@ -43,6 +46,10 @@ elseif opts.l or opts.list then
     print("build library directory not found (" .. lib_dir .. ")")
   end
   return
+elseif opts.charge then
+  charge_pos = vector(opts.charge)
+elseif opts.chest then
+  chest_pos = vector(opts.chest)
 elseif not opts.shape or opts.h or opts.help then
   print(usage)
   return
