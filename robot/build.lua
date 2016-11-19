@@ -72,30 +72,67 @@ end
 
 local shape = shape_lib.fromargs(table.unpack(args))
 
+local function move_back() 
+  if robot.back() then
+    return true
+  end
+  robot.turnAround()
+  robot.swing()
+  robot.turnAround()
+  return robot.back()
+end
+
 local function next_block()
   local position, orientation = location.get()
   local right = vector(-orientation.z, orientation.y, orientation.x)
   if shape:is_shell(position - orientation) then
     -- Go forward, place block behind
-    robot.back()
-    -- place block
-  elseif shape:is_shell(position - right) then
+    if move_back() then
+      robot.place()
+      return true
+    else
+      return false
+    end
+  elseif shape:is_shell(position + right) then
     -- turn right, go forward, place block behind
     robot.turnLeft()
-    robot.Back()
-    -- place block
-  elseif shape:is_shell(position + right) then
+    if move_back() then
+      robot.place()
+      return true
+    else
+      return false
+    end
+  elseif shape:is_shell(position - right) then
     -- turn left, go forward, place block behind
     robot.turnRight()
-    robot.back()
-    -- place block
-  else
+    if move_back() then
+      robot.place()
+      return true
+    else
+      return false
+    end
+  elseif shape:is_shell(position - orientation + right) then
     -- turn right, go forward, place block behind, turn left, go forward
-    robot.turnLeft()
-    robot.back()
-    -- place block
-    robot.turnLeft()
-    robot.back()
+    if move_back() then
+      robot.place()
+      robot.turnLeft()
+      if move_back() then
+        robot.turnRight()
+        return true
+      else
+        return false
+      end
+    end
+  elseif shape:is_shell(position - orientation - right) then
+    -- turn right, go forward, place block behind, turn left, go forward
+    robot.turnRight()
+    if move_back() then
+      robot.place()
+      robot.turnLeft()
+      return move_back()
+    end
+  else
+    error("Couldn't find the next block in the shape.")
   end
 end
 
@@ -108,8 +145,9 @@ end
 
 robot.turnLeft()
 
-while true do
-  next_block()
+local running = true
+while running do
+  running = next_block()
 end  
 
 --[[
