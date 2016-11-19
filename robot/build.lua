@@ -75,34 +75,27 @@ local shape = shape_lib.fromargs(table.unpack(args))
 local function next_block()
   local position, orientation = location.get()
   local right = vector(-orientation.z, orientation.y, orientation.x)
-  if shape:is_shell(position + orientation) then
+  if shape:is_shell(position - orientation) then
     -- Go forward, place block behind
-    robot.forward()
-    robot.turnAround()
+    robot.back()
     -- place block
-    robot.turnAround()
-  elseif shape:is_shell(position + right) then
-    -- turn right, go forward, place block behind
-    robot.turnRight()
-    robot.forward()
-    robot.turnAround()
-    -- place block
-    robot.turnAround()
   elseif shape:is_shell(position - right) then
-    -- turn left, go forward, place block behind
+    -- turn right, go forward, place block behind
     robot.turnLeft()
-    robot.forward()
-    robot.turnAround()
+    robot.Back()
     -- place block
-    robot.turnAround()
+  elseif shape:is_shell(position + right) then
+    -- turn left, go forward, place block behind
+    robot.turnRight()
+    robot.back()
+    -- place block
   else
     -- turn right, go forward, place block behind, turn left, go forward
-    robot.turnRight()
-    robot.forward()
-    robot.turnAround()
+    robot.turnLeft()
+    robot.back()
     -- place block
-    robot.turnRight()
-    robot.forward()
+    robot.turnLeft()
+    robot.back()
   end
 end
 
@@ -113,7 +106,7 @@ while shape:contains(position + orientation) do
   position, orientation = location.get()
 end
 
-robot.turnRight()
+robot.turnLeft()
 
 while true do
   next_block()
